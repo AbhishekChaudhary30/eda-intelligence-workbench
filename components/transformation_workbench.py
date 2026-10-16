@@ -10,6 +10,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from components.navigation import render_section_navigation
 from core.transformations import (
     TransformationError,
     TransformationManager,
@@ -26,6 +27,7 @@ def render_transformation_workbench(
         "Apply validated, traceable transformations to prepare and clean the active working dataset. "
         "The original uploaded dataset is immutably preserved in memory. Every operation can be previewed, undone, or reset."
     )
+    render_section_navigation("Transformation Workbench", position="top")
 
     working_df = manager.working_df
     orig_df = manager.original_df
@@ -346,3 +348,5 @@ def render_transformation_workbench(
                 file_name="transformation_audit_history.csv",
                 mime="text/csv",
             )
+
+    render_section_navigation("Transformation Workbench", position="bottom")

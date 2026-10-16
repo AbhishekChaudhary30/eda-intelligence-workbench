@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import streamlit as st
 
+from components.navigation import render_section_navigation
 from core.ingestion import (
     IngestionError,
     IngestionResult,
@@ -17,13 +18,15 @@ from core.ingestion import (
 from sample_data.loader import SAMPLE_DATASETS
 
 
-def render_upload_panel() -> IngestionResult | None:
+def render_upload_panel(render_nav: bool = True) -> IngestionResult | None:
     """Render file upload interface and return IngestionResult upon successful load."""
     st.markdown("### 📂 Ingest Tabular Dataset")
     st.markdown(
         "Upload a supported tabular dataset to begin automated exploratory data analysis. "
         "Files are processed locally and securely."
     )
+    if render_nav:
+        render_section_navigation("Upload Dataset", position="top")
 
     col_up, col_samples = st.columns([1.6, 1.0], gap="large")
 
@@ -163,5 +166,8 @@ def render_upload_panel() -> IngestionResult | None:
                 st.session_state["first_look_report"] = None
                 st.session_state["selected_section"] = "Data Preview"
                 st.rerun()
+
+    if render_nav:
+        render_section_navigation("Upload Dataset", position="bottom")
 
     return None

@@ -39,6 +39,7 @@ from components.chart_components import (
     plot_violin,
     plot_violin_by_category,
 )
+from components.navigation import render_section_navigation
 from core.chart_registry import (
     CHART_REGISTRY,
     evaluate_chart_compatibility,
@@ -55,6 +56,7 @@ def render_chart_explorer(df: pd.DataFrame, profile: DatasetProfile) -> None:
         "A centralized visualization engine supporting 25+ chart types across 7 families. "
         "Each chart evaluates data compatibility guards dynamically before rendering."
     )
+    render_section_navigation("Visualization Studio", position="top")
 
     # 1. Family selection
     families = get_available_chart_families()
@@ -427,3 +429,5 @@ def render_chart_explorer(df: pd.DataFrame, profile: DatasetProfile) -> None:
         st.plotly_chart(fig, use_container_width=True)
     else:
         st.info("Select parameters above to render the chart.")
+
+    render_section_navigation("Visualization Studio", position="bottom")

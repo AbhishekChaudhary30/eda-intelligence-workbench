@@ -41,6 +41,7 @@ from components.metric_cards import (
     render_observation_callout,
 )
 from components.missingness_panel import render_missingness_panel
+from components.navigation import render_section_navigation
 from components.outlier_panel import render_outlier_panel
 from components.sidebar import render_sidebar
 from components.statistical_analysis import render_statistical_analysis
@@ -172,6 +173,8 @@ def render_overview_section(df: pd.DataFrame | None, meta: DatasetMetadata | Non
             "Use the navigation sidebar to explore data quality, profiling, statistics, and visualizations."
         )
 
+    render_section_navigation("Overview & Getting Started", position="top")
+
     # Hero Intro Grid
     col_feat1, col_feat2, col_feat3 = st.columns(3)
     with col_feat1:
@@ -282,10 +285,13 @@ def render_overview_section(df: pd.DataFrame | None, meta: DatasetMetadata | Non
                 st.session_state["selected_section"] = "Data Preview"
                 st.rerun()
 
+    render_section_navigation("Overview & Getting Started", position="bottom")
+
 
 def render_profiling_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
     """Render comprehensive dataset-level and column-level structural profiles."""
     st.markdown("### 📋 Dataset Architecture & Structural Profile")
+    render_section_navigation("Dataset Profile", position="top")
 
     profile = get_or_compute_profile(df)
 
@@ -400,10 +406,13 @@ def render_profiling_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
                 for v_name, v_cnt, v_pct in p_col.top_values[:3]:
                     st.markdown(f"- `{v_name}`: {v_cnt:,} ({v_pct}%)")
 
+    render_section_navigation("Dataset Profile", position="bottom")
+
 
 def render_quality_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
     """Render data-quality audit, health score banner, outlier detection, and actionable remediation."""
     st.markdown("### 🛡️ Automated Data Quality Audit")
+    render_section_navigation("Data Quality Audit", position="top")
 
     profile = get_or_compute_profile(df)
     quality = get_or_compute_quality(df, profile)
@@ -482,6 +491,8 @@ def render_quality_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
             render_issue_alert(issue)
     else:
         st.success(f"No issues found matching severity filter '{sev_filter}'.")
+
+    render_section_navigation("Data Quality Audit", position="bottom")
 
 
 def render_statistics_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
@@ -753,6 +764,7 @@ def render_first_look_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
         "Runs an end-to-end evidence-based evaluation across dataset structure, quality issues, "
         "skewness, and correlations to produce deterministic observations and curated starter visualizations."
     )
+    render_section_navigation("Automatic First-Look", position="top")
 
     profile = get_or_compute_profile(df)
     quality = get_or_compute_quality(df, profile)
@@ -829,6 +841,8 @@ def render_first_look_section(df: pd.DataFrame, meta: DatasetMetadata) -> None:
             fig_pbox = plot_boxplot(df, cand.primary_numeric_col)
             st.plotly_chart(fig_pbox, use_container_width=True)
 
+    render_section_navigation("Automatic First-Look", position="bottom")
+
 
 def render_export_section(
     df: pd.DataFrame,
@@ -842,6 +856,7 @@ def render_export_section(
         "Download audit findings, descriptive tables, correlation matrices, outlier summaries, "
         "and the self-contained HTML executive audit report."
     )
+    render_section_navigation("Export & Download", position="top")
 
     profile = get_or_compute_profile(df)
     quality = get_or_compute_quality(df, profile)
@@ -1073,6 +1088,8 @@ def render_export_section(
                 use_container_width=True,
             )
 
+    render_section_navigation("Export & Download", position="bottom")
+
 
 # -----------------------------------------------------------------------------
 # MAIN APPLICATION ROUTING
@@ -1109,22 +1126,28 @@ def main() -> None:
         if df is not None and meta is not None:
             render_data_preview(df, meta)
         else:
+            render_section_navigation("Data Preview", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Data Preview", position="bottom")
 
     elif selected_section == "Dataset Profile":
         if df is not None and meta is not None:
             render_profiling_section(df, meta)
         else:
+            render_section_navigation("Dataset Profile", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Dataset Profile", position="bottom")
 
     elif selected_section == "Data Quality Audit":
         if df is not None and meta is not None:
             render_quality_section(df, meta)
         else:
+            render_section_navigation("Data Quality Audit", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Data Quality Audit", position="bottom")
 
     elif selected_section == "Automated Insights":
         if df is not None and meta is not None:
@@ -1132,62 +1155,78 @@ def main() -> None:
             quality = get_or_compute_quality(df, profile)
             render_insights_panel(df, profile, quality, settings)
         else:
+            render_section_navigation("Automated Insights", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Automated Insights", position="bottom")
 
     elif selected_section == "Visualization Studio":
         if df is not None and meta is not None:
             profile = get_or_compute_profile(df)
             render_chart_explorer(df, profile)
         else:
+            render_section_navigation("Visualization Studio", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Visualization Studio", position="bottom")
 
     elif selected_section == "Statistical Analysis":
         if df is not None and meta is not None:
             profile = get_or_compute_profile(df)
             render_statistical_analysis(df, profile, settings)
         else:
+            render_section_navigation("Statistical Analysis", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Statistical Analysis", position="bottom")
 
     elif selected_section == "Correlation Explorer":
         if df is not None and meta is not None:
             profile = get_or_compute_profile(df)
             render_correlation_explorer(df, profile, settings)
         else:
+            render_section_navigation("Correlation Explorer", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Correlation Explorer", position="bottom")
 
     elif selected_section == "Missingness Analysis":
         if df is not None and meta is not None:
             profile = get_or_compute_profile(df)
             render_missingness_panel(df, profile, settings)
         else:
+            render_section_navigation("Missingness Analysis", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Missingness Analysis", position="bottom")
 
     elif selected_section == "Outlier Analysis":
         if df is not None and meta is not None:
             profile = get_or_compute_profile(df)
             render_outlier_panel(df, profile, settings)
         else:
+            render_section_navigation("Outlier Analysis", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Outlier Analysis", position="bottom")
 
     elif selected_section == "Transformation Workbench":
         if df is not None and manager is not None:
             render_transformation_workbench(manager)
         else:
+            render_section_navigation("Transformation Workbench", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Transformation Workbench", position="bottom")
 
     elif selected_section == "Automatic First-Look":
         if df is not None and meta is not None:
             render_first_look_section(df, meta)
         else:
+            render_section_navigation("Automatic First-Look", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Automatic First-Look", position="bottom")
 
     elif selected_section == "Analysis Configuration":
         render_analysis_settings(settings)
@@ -1196,8 +1235,10 @@ def main() -> None:
         if df is not None and meta is not None:
             render_export_section(df, meta, settings, manager)
         else:
+            render_section_navigation("Export & Download", position="top")
             st.info("No dataset is loaded. Upload a dataset or select a sample from the sidebar.")
-            render_upload_panel()
+            render_upload_panel(render_nav=False)
+            render_section_navigation("Export & Download", position="bottom")
 
 
 if __name__ == "__main__":

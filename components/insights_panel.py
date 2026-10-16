@@ -11,6 +11,7 @@ import json
 import pandas as pd
 import streamlit as st
 
+from components.navigation import render_section_navigation
 from core.data_quality import QualityReport
 from core.insights import (
     filter_insights,
@@ -32,6 +33,7 @@ def render_insights_panel(
         "A 100% deterministic, rule-based insight engine deriving findings directly from mathematical calculations. "
         "No external generative AI APIs, zero hallucinated numbers."
     )
+    render_section_navigation("Automated Insights", position="top")
 
     # Generate insights
     all_insights = generate_deterministic_insights(
@@ -171,3 +173,4 @@ def render_insights_panel(
         file_name="analytical_insights.json",
         mime="application/json",
     )
+    render_section_navigation("Automated Insights", position="bottom")

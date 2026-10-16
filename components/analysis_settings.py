@@ -6,6 +6,7 @@ visualization defaults, and random seeds with full JSON import and export for sc
 
 import streamlit as st
 
+from components.navigation import render_section_navigation
 from core.settings import AnalysisSettings
 
 
@@ -16,6 +17,7 @@ def render_analysis_settings(settings: AnalysisSettings) -> AnalysisSettings:
         "Fine-tune statistical assumptions, outlier thresholds, random seeds, and missingness tokens. "
         "Settings can be saved to or loaded from a JSON configuration file to guarantee reproducible analytical runs."
     )
+    render_section_navigation("Analysis Configuration", position="top")
 
     col_exp1, col_exp2 = st.columns([1, 1])
     with col_exp1:
@@ -189,5 +191,7 @@ def render_analysis_settings(settings: AnalysisSettings) -> AnalysisSettings:
             st.session_state["analysis_settings"] = def_settings
             st.info("Restored default analysis settings.")
             st.rerun()
+
+    render_section_navigation("Analysis Configuration", position="bottom")
 
     return settings

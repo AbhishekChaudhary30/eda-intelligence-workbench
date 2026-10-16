@@ -10,6 +10,7 @@ import pandas as pd
 import streamlit as st
 
 from components.chart_components import plot_boxplot, plot_histogram, plot_qq_plot
+from components.navigation import render_section_navigation
 from core.advanced_statistics import (
     compute_bootstrap_mean_ci,
     compute_cohens_d,
@@ -38,6 +39,7 @@ def render_statistical_analysis(
         "Rigorous statistical diagnostics covering distributional moments, parametric & "
         "non-parametric normality tests, confidence intervals, and hypothesis tests with assumption checks."
     )
+    render_section_navigation("Statistical Analysis", position="top")
 
     numeric_cols = [
         c for c, p in profile.column_profiles.items()
@@ -378,3 +380,5 @@ def render_statistical_analysis(
                         st.warning("⚠️ " + " | ".join(chi_res.warnings))
                 else:
                     st.warning("; ".join(chi_res.warnings))
+
+    render_section_navigation("Statistical Analysis", position="bottom")

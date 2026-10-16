@@ -16,6 +16,7 @@ from components.chart_components import (
     plot_boxplot,
     plot_histogram,
 )
+from components.navigation import render_section_navigation
 from core.outlier_analysis import (
     analyze_all_numeric_outliers,
     detect_iqr_outliers,
@@ -37,6 +38,7 @@ def render_outlier_panel(
         "Detect and evaluate extreme observations across continuous distributions using "
         "Tukey's Interquartile Range (IQR), Standard Z-Score, and Median Absolute Deviation (MAD)."
     )
+    render_section_navigation("Outlier Analysis", position="top")
 
     numeric_cols = [
         c for c, p in profile.column_profiles.items()
@@ -217,3 +219,5 @@ def render_outlier_panel(
         > Statistically unusual observations may reflect breakthrough signals, rare real-world phenomena,
         > or heavy-tailed processes rather than measurement error.
         """)
+
+    render_section_navigation("Outlier Analysis", position="bottom")

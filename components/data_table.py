@@ -9,6 +9,7 @@ from __future__ import annotations
 import pandas as pd
 import streamlit as st
 
+from components.navigation import render_section_navigation
 from core.ingestion import DatasetMetadata
 from core.validation import ValidationReport, validate_dataset
 from utils.formatting import format_bytes
@@ -17,6 +18,7 @@ from utils.formatting import format_bytes
 def render_data_preview(df: pd.DataFrame, metadata: DatasetMetadata) -> None:
     """Render interactive tabular preview with safe row bounding and column filters."""
     st.markdown("### 🔍 Dataset Preview & Inspection")
+    render_section_navigation("Data Preview", position="top")
 
     total_rows = len(df)
     total_cols = len(df.columns)
@@ -113,3 +115,5 @@ def render_data_preview(df: pd.DataFrame, metadata: DatasetMetadata) -> None:
                 })
         schema_df = pd.DataFrame(schema_records)
         st.dataframe(schema_df, use_container_width=True, hide_index=True)
+
+    render_section_navigation("Data Preview", position="bottom")

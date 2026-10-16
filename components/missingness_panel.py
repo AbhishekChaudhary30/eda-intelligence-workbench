@@ -11,6 +11,7 @@ import plotly.express as px
 import streamlit as st
 
 from components.chart_components import COLOR_PALETTE, apply_dark_theme
+from components.navigation import render_section_navigation
 from core.missingness import (
     compute_group_missingness,
     compute_nullity_correlation,
@@ -32,6 +33,7 @@ def render_missingness_panel(
         "Examine missing-data prevalence, co-occurrence nullity correlations, row-level incompleteness, "
         "and disguised missing tokens (e.g. 'N/A', '?', 'none')."
     )
+    render_section_navigation("Missingness Analysis", position="top")
 
     # 1. Headline KPIs
     missing_cells = profile.total_missing_cells
@@ -224,3 +226,5 @@ def render_missingness_panel(
                         grp_missing,
                         use_container_width=True,
                     )
+
+    render_section_navigation("Missingness Analysis", position="bottom")

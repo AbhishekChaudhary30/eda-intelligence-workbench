@@ -11,6 +11,7 @@ import pandas as pd
 import streamlit as st
 
 from components.chart_components import plot_correlation_heatmap, plot_scatter
+from components.navigation import render_section_navigation
 from core.correlations import (
     compute_correlation_matrix,
     extract_ranked_correlations,
@@ -30,6 +31,7 @@ def render_correlation_explorer(
         "Evaluate pairwise linear (Pearson) or monotonic (Spearman, Kendall) dependencies. "
         "Includes exact paired sample sizes, two-tailed p-values, and Benjamini-Hochberg FDR adjustments."
     )
+    render_section_navigation("Correlation Explorer", position="top")
 
     numeric_cols = [
         c for c, p in profile.column_profiles.items()
@@ -190,3 +192,5 @@ def render_correlation_explorer(
                 "⚠️ **Methodological Boundary:** High correlation implies linear or monotonic co-variation, "
                 "not causal dependency. Lurking confounders or common response variables may account for the observed association."
             )
+
+    render_section_navigation("Correlation Explorer", position="bottom")
