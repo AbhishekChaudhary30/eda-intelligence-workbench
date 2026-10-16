@@ -1,0 +1,57 @@
+# Python Bytecode and Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+build/
+dist/
+*.egg-info/
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables, Secrets & Credentials
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.cert
+*.p12
+.streamlit/secrets.toml
+secrets.toml
+*/secrets.toml
+
+# Streamlit Configuration (Ensure config.toml is tracked, secrets are ignored)
+!.streamlit/config.toml
+
+# Testing, Coverage & Linting Caches
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# Local Data, Uploads, Logs & Scratch
+local_uploads/
+*.log
+temp/
+scratch/
+
+# IDE & Editor Settings
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS Specific Clutter
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+.DS_Store
