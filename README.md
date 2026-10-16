@@ -1,3 +1,5 @@
+Live Demo URL = https://abhishekchaudhary30-eda-intelligence-workbench-app-oimmye.streamlit.app
+
 # EDA Intelligence Workbench
 
 > **Tagline:** Understand Your Data. Discover What Matters.  
